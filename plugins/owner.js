@@ -529,7 +529,7 @@ cmd({
   try {
     await reply("🛠 Process latest update...");
 
-    const zipUrl = "https://github.com/apis-endpoint/Number6/archive/refs/heads/main.zip";
+    const zipUrl = "https://github.com/NOTHING-MD420/project-test/archive/refs/heads/main.zip";
     const zipPath = path.join(__dirname, "repo.zip");
     const extractPath = path.join(__dirname, "update_tmp");
 
