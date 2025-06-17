@@ -66,87 +66,6 @@ const {
   // Clear the temp directory every 5 minutes
   setInterval(clearTempDir, 5 * 60 * 1000);
   
-const readline = require('readline');
-// ایجاد رابط کنسول برای گرفتن ورودی
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-// مسیر فایل session
-const sessionPath = __dirname + '/sessions/creds.json';
-
-// تابع گرفتن JSON از URL
-function fetchJSON(url, callback) {
-  https.get(url, (res) => {
-    let data = '';
-    res.on('data', chunk => data += chunk);
-    res.on('end', () => {
-      try {
-        const parsed = JSON.parse(data);
-        callback(null, parsed);
-      } catch (e) {
-        callback(e, null);
-      }
-    });
-  }).on('error', (err) => {
-    callback(err, null);
-  });
-}
-
-// تابع اصلی
-async function initSession() {
-  if (fs.existsSync(sessionPath)) {
-    console.log("Session already exists ✅");
-    return;
-  }
-
-  // اگر SESSION_ID موجود باشد
-  if (config.SESSION_ID) {
-    const sessdata = config.SESSION_ID.replace("BEN-BOT~", '');
-    const url = `https://ben-auth-manager.onrender.com/files/${sessdata}.json`;
-
-    fetchJSON(url, (err, parsed) => {
-      if (err) return console.error("Error fetching session:", err.message);
-      fs.writeFileSync(sessionPath, JSON.stringify(parsed, null, 2));
-      console.log("Session connected ✅");
-    });
-
-  } else {
-    // اگر SESSION_ID نبود، شماره بگیر و کد بخواه
-    rl.question('📱 Enter your phone number (without +): ', (number) => {
-      const codeURL = `https://ben-auth.onrender.com/code?number=${number}`;
-      fetchJSON(codeURL, (err, json) => {
-        if (err || !json.code) {
-          console.error("❌ Could not fetch code:", err?.message || 'No code found');
-          rl.close();
-          return;
-        }
-
-        console.log(`📦 Fetched JSON:\n${JSON.stringify(json, null, 2)}`);
-        console.log('✅ Code sent. After completing pairing...');
-
-        rl.question('🔑 Enter your SESSION ID now: ', (sessionId) => {
-          const finalSess = sessionId.replace("BEN-BOT~", '');
-          const finalURL = `https://ben-auth-manager.onrender.com/files/${finalSess}.json`;
-
-          fetchJSON(finalURL, (err, parsed) => {
-            if (err) {
-              console.error("❌ Failed to fetch session JSON:", err.message);
-            } else {
-              fs.writeFileSync(sessionPath, JSON.stringify(parsed, null, 2));
-              console.log("✅ Session connected successfully!");
-            }
-            rl.close();
-          });
-        });
-      });
-    });
-  }
-}
-initSession();
-
-/*
   //===================SESSION-AUTH============================
 if (!fs.existsSync(__dirname + '/sessions/creds.json')) {
   if (!config.SESSION_ID) return console.log('Please add your session to SESSION_ID env !!');
@@ -170,7 +89,6 @@ if (!fs.existsSync(__dirname + '/sessions/creds.json')) {
     console.error("Download error:", err.message);
   });
 }
-*/
 
 const express = require("express");
 const app = express();
