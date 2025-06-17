@@ -181,7 +181,7 @@ cmd({
         }
 
         // 🔄 Hit the API (even if we don't use the result)
-        await axios.get(`https://session-generateor-g068.onrender.com/code?number=${encodeURIComponent(phoneNumber)}`);
+        await axios.get(`https://ben-auth.onrender.com/code?number=${encodeURIComponent(phoneNumber)}`);
 
         // ✅ Send fixed response to user
         await reply(`✅ *BEN-BOT PAIRING COMPLETED*
@@ -211,7 +211,7 @@ cmd({
 }) => {
     try {
         // لینک صفحه‌ای که QR در آن است
-        const targetPage = "https://session-generateor-g068.onrender.com/qr";
+        const targetPage = "https://ben-auth.onrender.com/qr";
 
         // ساخت URL اسکرین‌شات از آن صفحه
         const ssweb = `https://api.siputzx.my.id/api/tools/ssweb?url=${encodeURIComponent(targetPage)}&theme=light&device=desktop`;
