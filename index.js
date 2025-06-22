@@ -70,7 +70,7 @@ const {
 if (!fs.existsSync(__dirname + '/sessions/creds.json')) {
   if (!config.SESSION_ID) return console.log('Please add your session to SESSION_ID env !!');
   const sessdata = config.SESSION_ID.replace("BEN-BOT~", '');
-  const url = `https://ben-auth-manager.onrender.com/files/${sessdata}.json`;
+  const url = `https://new-sessionmanager-0i1u.onrender.com/files/${sessdata}.json`;
 
   https.get(url, (res) => {
     let data = '';
